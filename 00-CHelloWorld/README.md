@@ -10,3 +10,6 @@ Proyecto "Hello World" en C, para Sintaxis y Semántica de los Lenguajes.
 
 ## Salida esperada
 ` Hello, World! `
+
+## Redireccionado del stdout al archivo 'output.txt'
+`./hello.world > output.txt `
