@@ -1,4 +1,4 @@
-# utn-ssl-hello-world
+# Hello World
 Proyecto "Hello World" en C, para Sintaxis y Semántica de los Lenguajes.  
 
 ## Compilar
