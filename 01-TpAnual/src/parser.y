@@ -1,18 +1,22 @@
 %{
   #include <stdio.h>
-  #define YY_DECL extern "C" int yylex()
+  int yylex();
   void yyerror(const char* s);  
+
 %}
 
+%union {
+  int valor_entero;
+}
 
+%left OP_SUMA OP_SUMA
+%left OP_MULTIPLICACION
 %token IF ELSE RETURN INT BOOL WHILE CARACTER DIGITO
 
 %start palabra_reservada
 
 %%
 
-palabra_reservada		    : IF | ELSE | RETURN | INT | BOOL | WHILE;
-identificador           : CARACTER'+''('DIGITO'+'CARACTER'+'DIGITO')''*';
-constante               : DIGITO'+';
+expresion		    : IF | ELSE | RETURN | INT | BOOL | WHILE;
 
 

@@ -24,29 +24,29 @@ OTRO                [[:punct:]]
 
 %%
 
-{SALTO}                            {yylineno;}
-"<"                                return OP_MENOR;
-">"                                return OP_MAYOR;
-"="                                return OP_ASIGNACION;
-"+"                                return OP_SUMA;
-"-"                                return OP_RESTA;
-"*"                                return OP_MULTIPLICACION;
-"\("                               return OP_PARENTESIS_ABIERTO;
-"\)"                               return OP_PARENTESIS_CERRADO;
-"\{"                               return OP_BLOQUE_ABIERTO;
-"\}"                               return OP_BLOQUE_CERRADO;
-";"                                return OP_FIN_DE_LINEA;
-","                                return OP_SEPARADOR_PARAM;
-"if"                               return IF;
-"else"                             return ELSE;
-"return"                           return RETURN;
-"while"                            return WHILE;
-"int"                              return INT;
-"bool"                             return BOOL;
-"true"|"false"                     return ESTADO_BOOL;
-{CARACTER}({CARACTER}|{DIGITO})*   return IDENTIFICADOR;
-{DIGITO}+                          return CONSTANTE;
-{OTRO}                             {errlex++; sprintf(msg, "Error léxico en la linea: %d constante inválida: %s", yylineno, yytext); yyerror(msg);}
+{SALTO}                              {yylineno;}
+"<"                                  return OP_MENOR;
+">"                                  return OP_MAYOR;
+"="                                  return OP_ASIGNACION;
+"+"                                  return OP_SUMA;
+"-"                                  return OP_RESTA;
+"*"                                  return OP_MULTIPLICACION;
+"\("                                 return OP_PARENTESIS_ABIERTO;
+"\)"                                 return OP_PARENTESIS_CERRADO;
+"\{"                                 return OP_BLOQUE_ABIERTO;
+"\}"                                 return OP_BLOQUE_CERRADO;
+";"                                  return OP_FIN_DE_LINEA;
+","                                  return OP_SEPARADOR_PARAM;
+"if"                                 return IF;
+"else"                               return ELSE;
+"return"                             return RETURN;
+"while"                                 return WHILE;
+"int"                                   return INT;
+"bool"                                  return BOOL;
+"true"|"false"                          return ESTADO_BOOL;
+{CARACTER}({CARACTER}|{DIGITO})*     {if( yyleng > 16) {errlex++; sprintf(msg, "Error léxico en la linea: %d identificador excede longitud maxima: %s", yylineno, yytext); yyerror(msg);} else return IDENTIFICADOR;}
+{DIGITO}+                            return CONSTANTE;
+{OTRO}                               {errlex++; sprintf(msg, "Error léxico en la linea: %d constante inválida: %s", yylineno, yytext); yyerror(msg);}
 
 %%
 
