@@ -1,0 +1,13 @@
+int valor1 = 5;
+int valor2 = 4;
+int suma(valor1, valor2) {
+  return valor1 + valor2
+}
+int esPositivo(valor) {
+  if( valor > 0){
+    return true;
+  } else {
+    return false;
+  }
+}
+&

@@ -7,6 +7,10 @@
   int yylineno;
 	int errlex;
 	char msg[120];
+
+  void yyerror(char const *s) {
+    fprintf (stderr, "%s\n", s);
+  }
 %}
 
 %option outfile="scanner.c"
@@ -16,10 +20,11 @@
 SALTO               [\n]
 DIGITO              [0-9]
 CARACTER            [_a-zA-Z]
+OTRO                [[:punct:]]
 
 %%
 
-{SALTO}                            return yylineno;
+{SALTO}                            {yylineno;}
 "<"                                return OP_MENOR;
 ">"                                return OP_MAYOR;
 "="                                return OP_ASIGNACION;
@@ -41,6 +46,7 @@ CARACTER            [_a-zA-Z]
 "true"|"false"                     return ESTADO_BOOL;
 {CARACTER}({CARACTER}|{DIGITO})*   return IDENTIFICADOR;
 {DIGITO}+                          return CONSTANTE;
+{OTRO}                             {errlex++; sprintf(msg, "Error léxico: constante inválida: %s", yytext); yyerror(msg);}
 
 %%
 
@@ -51,5 +57,7 @@ int main (int argc, char** argv) {
     printf("Linea: %d token: %d \t lexema %s \n", yylineno, token, yytext);
     token = yylex();
   }
+
+  //printf("Errores léxicos: %d ", errlex);
   return 0;
 }
