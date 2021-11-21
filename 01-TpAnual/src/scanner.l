@@ -46,7 +46,7 @@ OTRO                [[:punct:]]
 "true"|"false"                     return ESTADO_BOOL;
 {CARACTER}({CARACTER}|{DIGITO})*   return IDENTIFICADOR;
 {DIGITO}+                          return CONSTANTE;
-{OTRO}                             {errlex++; sprintf(msg, "Error léxico: constante inválida: %s", yytext); yyerror(msg);}
+{OTRO}                             {errlex++; sprintf(msg, "Error léxico en la linea: %d constante inválida: %s", yylineno, yytext); yyerror(msg);}
 
 %%
 
