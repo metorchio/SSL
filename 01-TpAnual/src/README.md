@@ -1,11 +1,14 @@
-Para el scanner ejecutar:
+### Para el scanner ejecutar:
+
 flex scanner.l
+
 gcc -o scanner_prueba scanner.c -lfl
+
 ./scanner_prueba input.txt
 
 
 
-Ejecutar:
+### Ejecutar:
 flex scanner.l
 bison parser.y
 gcc -Wall *.c -o compilador -lfl
