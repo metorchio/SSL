@@ -25,6 +25,11 @@ OTRO                [[:punct:]]
 %%
 
 {SALTO}                              {yylineno;}
+"!"                                  return OP_NEGACION;
+"&&"                                 return OP_AND;
+"||"                                 return OP_OR;
+"=="                                 return OP_IGUAL;
+"!="                                 return OP_DISTINTO;
 "<"                                  return OP_MENOR;
 ">"                                  return OP_MAYOR;
 "="                                  return OP_ASIGNACION;
@@ -40,10 +45,10 @@ OTRO                [[:punct:]]
 "if"                                 return IF;
 "else"                               return ELSE;
 "return"                             return RETURN;
-"while"                                 return WHILE;
-"int"                                   return INT;
-"bool"                                  return BOOL;
-"true"|"false"                          return ESTADO_BOOL;
+"start"                              return MAIN;
+"int"                                return INT;
+"bool"                               return BOOL;
+"true"|"false"                       return ESTADO_BOOL;
 {CARACTER}({CARACTER}|{DIGITO})*     {if( yyleng > 16) {errlex++; sprintf(msg, "Error léxico en la linea: %d identificador excede longitud maxima: %s", yylineno, yytext); yyerror(msg);} else return IDENTIFICADOR;}
 {DIGITO}+                            return CONSTANTE;
 {OTRO}                               {errlex++; sprintf(msg, "Error léxico en la linea: %d constante inválida: %s", yylineno, yytext); yyerror(msg);}
