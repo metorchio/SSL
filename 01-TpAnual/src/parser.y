@@ -18,70 +18,70 @@
 
 %%
 
-programa		        : principal | principal funciones;
+programa		                : principal | principal funciones;
 
-principal           : INT MAIN OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO bloquecodigo;
+principal                   : INT MAIN OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO bloquecodigo;
 
-bloquecodigo        : OP_BLOQUE_ABIERTO lineascodigo OP_BLOQUE_CERRADO;
+bloquecodigo                : OP_BLOQUE_ABIERTO lineascodigo OP_BLOQUE_CERRADO;
 
-lineascodigos       : lineascodigo |;
+lineascodigos               : lineascodigo |;
 
-lineascodigo        : lineascodigo linea | linea;
+lineascodigo                : lineascodigo linea | linea;
 
-linea               : invocarmetodo OP_FIN_DE_LINEA 
-                      | crearvariable OP_FIN_DE_LINEA 
-                      | cambiarvalor OP_FIN_DE_LINEA 
-                      | crearmetodo OP_FIN_DE_LINEA;
+linea                       : invocarmetodo OP_FIN_DE_LINEA 
+                              | crearvariable OP_FIN_DE_LINEA 
+                              | cambiarvalor OP_FIN_DE_LINEA 
+                              | crearmetodo OP_FIN_DE_LINEA;
 
-parametros          : OP_PARENTESIS_ABIERTO parametro OP_PARENTESIS_CERRADO;
+parametros                  : OP_PARENTESIS_ABIERTO parametro OP_PARENTESIS_CERRADO;
 
-invocarmetodo       : IDENTIFICADOR parametros OP_FIN_DE_LINEA;
+invocarmetodo               : IDENTIFICADOR parametros OP_FIN_DE_LINEA;
 
-valor               : IDENTIFICADOR 
-                      | CONSTANTE;
+valor                       : IDENTIFICADOR 
+                              | CONSTANTE;
 
-parametro           : valor
-                      | parametro OP_SEPARADOR_PARAM parametro
-                      | ;
+parametro                   : valor
+                              | parametro OP_SEPARADOR_PARAM parametro
+                              | ;
 
-tipodedato          : INT | BOOL;
+tipodedato                  : INT | BOOL;
 
-crearvariable       : tipodedato IDENTIFICADOR 
-                      | tipodedato IDENTIFICADOR asignarvalor; 
+crearvariable               : tipodedato IDENTIFICADOR 
+                              | tipodedato IDENTIFICADOR asignarvalor; 
 
-asignarvalor        : OP_ASIGNACION valor 
-                      | OP_ASIGNACION asignacion;
+asignarvalor                : OP_ASIGNACION valor 
+                              | OP_ASIGNACION asignacion;
 
-asignacion          : invocarmetodo | aritmetico;
+asignacion                  : invocarmetodo | aritmetico;
 
-aritmetico          : operacioncomun | operacioncomun operacionconresto;
+aritmetico                  : operacioncomun | operacioncomun operacionconresto;
 
-operacioncomun      : valor operacionmat valor;
+operacioncomun              : valor operacionmat valor;
 
-operacionconresto   : opcomun | operacionconresto opcomun;
+operacionconresto           : opcomun | operacionconresto opcomun;
 
-opcomun             : operacionmat valor;
+opcomun                     : operacionmat valor;
 
-operacionmat        : OP_SUMA | OP_RESTA | OP_MULTIPLICACION;
+operacionmat                : OP_SUMA | OP_RESTA | OP_MULTIPLICACION;
 
-cambiarvalor        : IDENTIFICADOR asignarvalor;
+cambiarvalor                : IDENTIFICADOR asignarvalor;
 
-operacioncomunbool  : valor operacionbool valor;
+operacioncomunbool          : valor operacionbool valor;
 
-operacionconrestobool : opbool | operacionconrestobool opbool;
+operacionconrestobool       : opbool | operacionconrestobool opbool;
 
-opbool              : operacionbool valor;
+opbool                      : operacionbool valor;
 
-operacionbool       : OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_OR | OP_DISTINTO;
+operacionbool               : OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_OR | OP_DISTINTO;
 
-aritmeticobool      : operacioncomunbool | operacioncomunbool operacionconrestobool;
+aritmeticobool              : operacioncomunbool | operacioncomunbool operacionconrestobool;
 
-condicionsi         : IF OP_PARENTESIS_ABIERTO aritmeticobool OP_PARENTESIS_CERRADO bloquecodigo;
+condicionsi                 : IF OP_PARENTESIS_ABIERTO aritmeticobool OP_PARENTESIS_CERRADO bloquecodigo;
 
-condicionno         : ELSE bloquecodigo;
+condicionno                 : ELSE bloquecodigo;
 
-condicional         : condicionsi | condicionsi condicionno ;
+condicional                 : condicionsi | condicionsi condicionno ;
 
-crearmetodo         : tipodedato IDENTIFICADOR parametros bloquecodigo;
+crearmetodo                 : tipodedato IDENTIFICADOR parametros bloquecodigo;
 
 
