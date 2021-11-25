@@ -23,7 +23,13 @@ int suma( valor1, int v) {
   var = 3;
 }
 
-int me(){
-  int v = ((2 + 2) + b);
+int math(){
+  int v = 2 + (6- 4; 
 }
+
+int boolean(){
+  bool v = true || ;
+  bool b = 5 > < 6; 
+}
+
 

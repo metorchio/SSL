@@ -7,5 +7,9 @@ int start(){
 
 int suma(int valor1, int valor2) {
   int suma = valor1 + valor2;
-  
+}
+
+
+int opConParentesis(){
+  int v = ((2 + 2) + b);
 }

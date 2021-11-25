@@ -59,20 +59,28 @@ crearvariable               : tipodedato IDENTIFICADOR {printf("\ndeclaracion de
                               | tipodedato IDENTIFICADOR asignarvalor {printf("\ndeclaracion y asginacion de variable: %s - %s", $1, $2);}
                               ; 
 
-asignarvalor                : OP_ASIGNACION valor 
-                              | OP_ASIGNACION asignacion;
+asignarvalor                  : OP_ASIGNACION invocarmetodo 
+                                | OP_ASIGNACION expresionaritmetica 
+                                | OP_ASIGNACION expresionaritmeticabool ;
 
-asignacion                  : invocarmetodo | aritmetico ;
+expresionaritmetica         : termino 
+                              | expresionaritmetica OP_SUMA termino 
+                              | expresionaritmetica OP_RESTA termino;
 
-aritmetico                  : operacioncomun | operacioncomun operacionconresto;
+termino                     : factor 
+                              | termino OP_MULTIPLICACION factor;
 
-operacioncomun              : valor operacionmat valor ;
+factor                      : valor 
+                              | OP_PARENTESIS_ABIERTO expresionaritmetica OP_PARENTESIS_CERRADO;
 
-operacionconresto           : opcomun | operacionconresto opcomun;
+expresionaritmeticabool     : terminobool 
+                              | expresionaritmeticabool OP_OR terminobool ;
 
-opcomun                     : operacionmat valor;
+terminobool                 : factorbool 
+                              | terminobool operacionbool factorbool;
 
-operacionmat                : OP_SUMA | OP_RESTA | OP_MULTIPLICACION;
+factorbool                  : valor 
+                              | OP_PARENTESIS_ABIERTO expresionaritmeticabool OP_PARENTESIS_CERRADO;
 
 cambiarvalor                : IDENTIFICADOR asignarvalor
                               ;
@@ -81,17 +89,9 @@ condicional                 : condicionsi | condicionsi condicionno ;
 
 condicionno                 : ELSE bloquecodigo;
 
-condicionsi                 : IF OP_PARENTESIS_ABIERTO aritmeticobool OP_PARENTESIS_CERRADO bloquecodigo;
+condicionsi                 : IF OP_PARENTESIS_ABIERTO expresionaritmeticabool OP_PARENTESIS_CERRADO bloquecodigo;
 
-aritmeticobool              : operacioncomunbool | operacioncomunbool operacionconrestobool;
-
-operacionconrestobool       : opbool | operacionconrestobool opbool;
-
-operacioncomunbool          : valor operacionbool valor;
-
-opbool                      : operacionbool valor;
-
-operacionbool               : OP_NEGACION | OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_OR | OP_DISTINTO;
+operacionbool               : OP_NEGACION | OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_DISTINTO;
 
 crearmetodo                 : tipodedato IDENTIFICADOR parametrosentrada bloquecodigo
                               | error bloquecodigo { yyerrok; } ;
