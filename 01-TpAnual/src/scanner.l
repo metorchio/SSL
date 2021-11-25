@@ -88,10 +88,10 @@ int main(int argc, char** argv) {
 
 void scanInput() {
   int token = yylex();
-    while( token ){
-      printf("\nLinea: %d token: %d \t lexema %s", yylineno, token, yytext);
-      token = yylex();
-    }
+  while( token ){
+    printf("\nLinea: %d token: %d \t lexema %s", yylineno, token, yytext);
+    token = yylex();
+  }
 }
 
 void parseInput() {

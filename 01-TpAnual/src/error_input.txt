@@ -3,38 +3,27 @@ int start(){
   int valor2 = 4;
 }
 
-int suma(int valor1, int v) {
-  var = 3;
+int suma(int valor1, int ) {
+  v = 3;
 }
 
 int me(){
   int v = 4;
 }
 
-bool error(){
-
-}
-
-void error(){
-  bool = false
+unError asd() {
+  bool = true;
 }
 
 int om(){
   bool = true;
 }
 
-int suma(int valor1, int v) {
+int suma( valor1, int v) {
   var = 3;
 }
 
 int me(){
-  int v = 4;
+  int v = ((2 + 2) + b);
 }
 
-bool error(){
-
-}
-
-bool error2(){
-  bool = false
-}

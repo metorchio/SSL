@@ -1,6 +1,7 @@
 %code top {
   #include <stdio.h>
   #include "scanner.h"
+  #define YYERROR_VERBOSE
 }
 
 %code provides {
@@ -18,13 +19,14 @@
 %left OP_SUMA OP_RESTA
 %left OP_MULTIPLICACION
 
+
 %start programa
 
 %%
 
 programa		                : principal | principal funciones ;
 
-funciones                   : funciones crearmetodo | crearmetodo;
+funciones                   : funciones crearmetodo | crearmetodo ;
 
 principal                   : INT MAIN OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO bloquecodigo;
 
@@ -38,12 +40,9 @@ linea                       : invocarmetodo OP_FIN_DE_LINEA
                               | crearvariable OP_FIN_DE_LINEA  
                               | cambiarvalor OP_FIN_DE_LINEA  
                               | condicional 
-                              | error OP_FIN_DE_LINEA ;
+                              | error OP_FIN_DE_LINEA { yyerrok; };
 
-parametros                  : parametros OP_SEPARADOR_PARAM parametro | parametro;
-
-invocarmetodo               : IDENTIFICADOR OP_PARENTESIS_ABIERTO parametrosenvio OP_PARENTESIS_CERRADO OP_FIN_DE_LINEA
-                              | OP_PARENTESIS_ABIERTO error OP_PARENTESIS_CERRADO;
+invocarmetodo               : IDENTIFICADOR OP_PARENTESIS_ABIERTO parametrosenvio OP_PARENTESIS_CERRADO OP_FIN_DE_LINEA;
 
 parametrosenvio             : paramenvio | ;
 
@@ -53,21 +52,21 @@ valor                       : IDENTIFICADOR
                               | CONSTANTE
                               | ESTADO_BOOL;
 
-parametro                   : tipodedato IDENTIFICADOR;
 
-tipodedato                  : INT | BOOL;
+tipodedato                  : INT | BOOL ;
 
 crearvariable               : tipodedato IDENTIFICADOR {printf("\ndeclaracion de variable: %s - %s", $1, $2);}
-                              | tipodedato IDENTIFICADOR asignarvalor {printf("\ndeclaracion y asginacion de variable: %s - %s", $1, $2);}; 
+                              | tipodedato IDENTIFICADOR asignarvalor {printf("\ndeclaracion y asginacion de variable: %s - %s", $1, $2);}
+                              ; 
 
 asignarvalor                : OP_ASIGNACION valor 
                               | OP_ASIGNACION asignacion;
 
-asignacion                  : invocarmetodo | aritmetico;
+asignacion                  : invocarmetodo | aritmetico ;
 
 aritmetico                  : operacioncomun | operacioncomun operacionconresto;
 
-operacioncomun              : valor operacionmat valor;
+operacioncomun              : valor operacionmat valor ;
 
 operacionconresto           : opcomun | operacionconresto opcomun;
 
@@ -76,7 +75,7 @@ opcomun                     : operacionmat valor;
 operacionmat                : OP_SUMA | OP_RESTA | OP_MULTIPLICACION;
 
 cambiarvalor                : IDENTIFICADOR asignarvalor
-                              | IDENTIFICADOR error ;
+                              ;
 
 condicional                 : condicionsi | condicionsi condicionno ;
 
@@ -94,12 +93,15 @@ opbool                      : operacionbool valor;
 
 operacionbool               : OP_NEGACION | OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_OR | OP_DISTINTO;
 
-crearmetodo                 : tipodedato IDENTIFICADOR OP_PARENTESIS_ABIERTO parametrosentrada OP_PARENTESIS_CERRADO bloquecodigo
-                            | OP_PARENTESIS_ABIERTO error OP_PARENTESIS_CERRADO;
+crearmetodo                 : tipodedato IDENTIFICADOR parametrosentrada bloquecodigo
+                              | error bloquecodigo { yyerrok; } ;
 
-parametrosentrada           : parametros | ;
+parametrosentrada           : OP_PARENTESIS_ABIERTO parametros OP_PARENTESIS_CERRADO 
+                              | OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO;
 
+parametros                  : parametros OP_SEPARADOR_PARAM parametro | parametro ;
 
+parametro                   : tipodedato IDENTIFICADOR ;
 
 %%
 
