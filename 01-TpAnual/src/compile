@@ -1,0 +1,4 @@
+rm parser.h parser.c scanner.h scanner.c scanner_prueba
+bison -d -o parser.c parser.y
+flex scanner.l
+gcc -o scanner_prueba scanner.c parser.c -lfl

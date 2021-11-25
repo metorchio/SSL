@@ -1,15 +1,19 @@
-%{
+%code top {
   #include <stdio.h>
-  int yylex();
-  void yyerror(const char* s);  
-
-%}
-
-%union {
-  int valor_entero;
+  #include "scanner.h"
 }
 
-%token OP_MENOR OP_MAYOR OP_ASIGNACION OP_SUMA OP_RESTA OP_MULTIPLICACION OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO OP_BLOQUE_ABIERTO OP_BLOQUE_CERRADO OP_FIN_DE_LINEA OP_SEPARADOR_PARAM IF ELSE RETURN WHILE INT BOOL ESTADO_BOOL IDENTIFICADOR CONSTANTE
+%code provides {
+  extern int errlex;
+	extern int yynerrs;
+  int yylex();
+  void yyerror(char const *s);
+}
+
+%define api.value.type{char *}
+%define parse.error verbose
+
+%token OP_MENOR OP_MAYOR OP_ASIGNACION OP_SUMA OP_RESTA OP_MULTIPLICACION OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO OP_BLOQUE_ABIERTO OP_BLOQUE_CERRADO OP_FIN_DE_LINEA OP_SEPARADOR_PARAM IF ELSE RETURN INT BOOL ESTADO_BOOL IDENTIFICADOR CONSTANTE MAIN OP_IGUAL OP_AND OP_OR OP_DISTINTO OP_NEGACION
 
 %left OP_SUMA OP_RESTA
 %left OP_MULTIPLICACION
@@ -18,36 +22,43 @@
 
 %%
 
-programa		                : principal | principal funciones;
+programa		                : principal | principal funciones ;
+
+funciones                   : funciones crearmetodo | crearmetodo;
 
 principal                   : INT MAIN OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO bloquecodigo;
 
-bloquecodigo                : OP_BLOQUE_ABIERTO lineascodigo OP_BLOQUE_CERRADO;
+bloquecodigo                : OP_BLOQUE_ABIERTO lineascodigos OP_BLOQUE_CERRADO;
 
-lineascodigos               : lineascodigo |;
+lineascodigos               : lineascodigo | ;
 
 lineascodigo                : lineascodigo linea | linea;
 
-linea                       : invocarmetodo OP_FIN_DE_LINEA 
-                              | crearvariable OP_FIN_DE_LINEA 
-                              | cambiarvalor OP_FIN_DE_LINEA 
-                              | crearmetodo OP_FIN_DE_LINEA;
+linea                       : invocarmetodo OP_FIN_DE_LINEA  
+                              | crearvariable OP_FIN_DE_LINEA  
+                              | cambiarvalor OP_FIN_DE_LINEA  
+                              | condicional 
+                              | error OP_FIN_DE_LINEA ;
 
-parametros                  : OP_PARENTESIS_ABIERTO parametro OP_PARENTESIS_CERRADO;
+parametros                  : parametros OP_SEPARADOR_PARAM parametro | parametro;
 
-invocarmetodo               : IDENTIFICADOR parametros OP_FIN_DE_LINEA;
+invocarmetodo               : IDENTIFICADOR OP_PARENTESIS_ABIERTO parametrosenvio OP_PARENTESIS_CERRADO OP_FIN_DE_LINEA
+                              | OP_PARENTESIS_ABIERTO error OP_PARENTESIS_CERRADO;
+
+parametrosenvio             : paramenvio | ;
+
+paramenvio                  : paramenvio OP_SEPARADOR_PARAM valor | valor;
 
 valor                       : IDENTIFICADOR 
-                              | CONSTANTE;
+                              | CONSTANTE
+                              | ESTADO_BOOL;
 
-parametro                   : valor
-                              | parametro OP_SEPARADOR_PARAM parametro
-                              | ;
+parametro                   : tipodedato IDENTIFICADOR;
 
 tipodedato                  : INT | BOOL;
 
-crearvariable               : tipodedato IDENTIFICADOR 
-                              | tipodedato IDENTIFICADOR asignarvalor; 
+crearvariable               : tipodedato IDENTIFICADOR {printf("\ndeclaracion de variable: %s - %s", $1, $2);}
+                              | tipodedato IDENTIFICADOR asignarvalor {printf("\ndeclaracion y asginacion de variable: %s - %s", $1, $2);}; 
 
 asignarvalor                : OP_ASIGNACION valor 
                               | OP_ASIGNACION asignacion;
@@ -64,24 +75,34 @@ opcomun                     : operacionmat valor;
 
 operacionmat                : OP_SUMA | OP_RESTA | OP_MULTIPLICACION;
 
-cambiarvalor                : IDENTIFICADOR asignarvalor;
-
-operacioncomunbool          : valor operacionbool valor;
-
-operacionconrestobool       : opbool | operacionconrestobool opbool;
-
-opbool                      : operacionbool valor;
-
-operacionbool               : OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_OR | OP_DISTINTO;
-
-aritmeticobool              : operacioncomunbool | operacioncomunbool operacionconrestobool;
-
-condicionsi                 : IF OP_PARENTESIS_ABIERTO aritmeticobool OP_PARENTESIS_CERRADO bloquecodigo;
-
-condicionno                 : ELSE bloquecodigo;
+cambiarvalor                : IDENTIFICADOR asignarvalor
+                              | IDENTIFICADOR error ;
 
 condicional                 : condicionsi | condicionsi condicionno ;
 
-crearmetodo                 : tipodedato IDENTIFICADOR parametros bloquecodigo;
+condicionno                 : ELSE bloquecodigo;
+
+condicionsi                 : IF OP_PARENTESIS_ABIERTO aritmeticobool OP_PARENTESIS_CERRADO bloquecodigo;
+
+aritmeticobool              : operacioncomunbool | operacioncomunbool operacionconrestobool;
+
+operacionconrestobool       : opbool | operacionconrestobool opbool;
+
+operacioncomunbool          : valor operacionbool valor;
+
+opbool                      : operacionbool valor;
+
+operacionbool               : OP_NEGACION | OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_OR | OP_DISTINTO;
+
+crearmetodo                 : tipodedato IDENTIFICADOR OP_PARENTESIS_ABIERTO parametrosentrada OP_PARENTESIS_CERRADO bloquecodigo
+                            | OP_PARENTESIS_ABIERTO error OP_PARENTESIS_CERRADO;
+
+parametrosentrada           : parametros | ;
 
 
+
+%%
+
+void yyerror(char const *s){
+		printf("\nLínea #%d  \t %s", yylineno, s);
+}

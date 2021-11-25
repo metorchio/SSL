@@ -1,15 +1,40 @@
-int valor1 = 5;
-int valor2 = 4;
-int suma(valor1, valor2) {
-  return valor1 + valor2
-}
-int esPositivo(valor) {
-  if( valor > 0){
-    return true;
-  } else {
-    return false;
-  }
+int start(){
+  sarasa = 5
+  int valor2 = 4;
 }
 
-bool identificadorDemasiadoLargo = true;
-&
+int suma(int valor1, int v) {
+  var = 3;
+}
+
+int me(){
+  int v = 4;
+}
+
+bool error(){
+
+}
+
+void error(){
+  bool = false
+}
+
+int om(){
+  bool = true;
+}
+
+int suma(int valor1, int v) {
+  var = 3;
+}
+
+int me(){
+  int v = 4;
+}
+
+bool error(){
+
+}
+
+bool error2(){
+  bool = false
+}
