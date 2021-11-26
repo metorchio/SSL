@@ -82,7 +82,7 @@ condicional                 : condicionsi | condicionsi condicionno ;
 condicionno                 : ELSE bloquecodigo;
 
 condicionsi                 : IF OP_PARENTESIS_ABIERTO condicion OP_PARENTESIS_CERRADO bloquecodigo 
-                              | error { yyerrok; };
+                              ;
 
 operacionbool               : OP_NEGACION | OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_DISTINTO;
 

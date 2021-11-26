@@ -12,7 +12,7 @@ int start(){
   if( 3 > 4 ){
     valor1 = 3;
   } else {
-    valor1 = 2valor2;
+    valor1 = valor2;
   }
 
 }
