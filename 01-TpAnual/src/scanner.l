@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
   }
   
   printf("\nCompilación de: %s", argv[2]);  
-  int parseOutput = 0;
+  int parseOutput = -1;
   printf("\n");
   if( scanCmd(argv[1]) ){
     scanInput();

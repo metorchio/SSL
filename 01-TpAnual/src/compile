@@ -1,4 +1,5 @@
 rm parser.h parser.c scanner.h scanner.c scanner_prueba parser.output
+
 bison --verbose -d -o parser.c parser.y
 flex scanner.l
-gcc -o scanner_prueba scanner.c parser.c -lfl
+gcc -o compilador scanner.c parser.c -lfl
