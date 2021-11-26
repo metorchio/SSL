@@ -6,7 +6,7 @@ int start(){
   if( true ) {
     valor1 = 3;
   } else {
-    valor1g# = valor2;
+    valor1 = valor2;
   }
 
   if( 3 > 4 ){
