@@ -55,8 +55,8 @@ valor                       : IDENTIFICADOR
 
 tipodedato                  : INT | BOOL ;
 
-crearvariable               : tipodedato IDENTIFICADOR {printf("\ndeclaracion de variable: %s - %s", $1, $2);}
-                              | tipodedato IDENTIFICADOR asignarvalor {printf("\ndeclaracion y asginacion de variable: %s - %s", $1, $2);}
+crearvariable               : tipodedato IDENTIFICADOR
+                              | tipodedato IDENTIFICADOR asignarvalor
                               ; 
 
 asignarvalor                  : OP_ASIGNACION invocarmetodo 

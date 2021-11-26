@@ -70,8 +70,9 @@ int main(int argc, char** argv) {
     return 1;
   }
   
+  printf("\nCompilación de: %s", argv[2]);  
   int parseOutput = 0;
-  printf("\n\n");
+  printf("\n");
   if( scanCmd(argv[1]) ){
     scanInput();
   } else if( parseCmd(argv[1]) ) {
