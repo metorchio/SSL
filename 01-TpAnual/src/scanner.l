@@ -58,7 +58,10 @@ OTRO                [[:punct:]]
 %%
 
 void scanInput();
-void parseInput();
+int parseInput();
+int scanCmd(char* inputCmd);
+int parseCmd(char* inputCmd);
+int scanAndParseCmd(char* inputCmd);
 
 int main(int argc, char** argv) {
   yyin = fopen(argv[2], "r");
@@ -67,20 +70,31 @@ int main(int argc, char** argv) {
     return 1;
   }
   
+  int parseOutput = 0;
   printf("\n\n");
-  if( strcmp(argv[1], "--scan") == 0 ){
+  if( scanCmd(argv[1]) ){
     scanInput();
-  } else if( strcmp(argv[1], "--parse") == 0 ) {
-    parseInput();
-  } else if( strcmp(argv[1], "--all") == 0 ) {
+  } else if( parseCmd(argv[1]) ) {
+    parseOutput = parseInput();
+  } else if( scanAndParseCmd(argv[1]) ) {
     scanInput();
     fseek(yyin, 0, SEEK_SET);
     yylineno = 1;
     printf("\n");  
-    parseInput();
+    parseOutput = parseInput();
+  } else {
+    printf("Error de comando. \nLos comandos aceptados son: \n");
+    printf("\t --scan \t para ejecutar el scanner léxico. \n");
+    printf("\t --parse \t para ejecutar el parser léxico. \n");
+    printf("\t --all \t para ejecutar el scanner y el parser léxico. \n");
   }
 
-  //printf("Errores léxicos: %d ", errlex);
+  if( parseOutput == 0 ) {
+    printf("\n\nCompilación terminada con éxito.");
+  } else {
+    printf("\n\nErrores en la compilación.");
+    printf("\nErrores léxicos: %d - Errores sintáctico: %d", errlex, yynerrs);
+  }
   printf("\n\n");
   fclose(yyin);
   return 0;
@@ -94,6 +108,18 @@ void scanInput() {
   }
 }
 
-void parseInput() {
-  yyparse();
+int parseInput() {
+  return yyparse();
+}
+
+int scanCmd(char* inputCmd){
+  return strcmp(inputCmd, "--scan") == 0;
+}
+
+int parseCmd(char* inputCmd){
+  return strcmp(inputCmd, "--parse") == 0;
+}
+
+int scanAndParseCmd(char* inputCmd){
+  return strcmp(inputCmd, "--all") == 0;
 }

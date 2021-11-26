@@ -2,7 +2,19 @@ int start(){
   int variable;
   int valor1 = 5;
   int valor2 = 4;
-  
+
+  if( true ) {
+    valor1 = 3;
+  } else {
+    valor1g# = valor2;
+  }
+
+  if( 3 > 4 ){
+    valor1 = 3;
+  } else {
+    valor1 = 2valor2;
+  }
+
 }
 
 int suma(int valor1, int valor2) {
@@ -13,3 +25,4 @@ int suma(int valor1, int valor2) {
 int opConParentesis(){
   int v = ((2 + 2) + b);
 }
+

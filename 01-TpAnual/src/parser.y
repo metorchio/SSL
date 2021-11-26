@@ -24,7 +24,7 @@
 
 %%
 
-programa		                : principal | principal funciones ;
+programa		                : principal | principal funciones {if(yynerrs || errlex) YYABORT; else YYACCEPT;};
 
 funciones                   : funciones crearmetodo | crearmetodo ;
 
@@ -60,8 +60,7 @@ crearvariable               : tipodedato IDENTIFICADOR {printf("\ndeclaracion de
                               ; 
 
 asignarvalor                  : OP_ASIGNACION invocarmetodo 
-                                | OP_ASIGNACION expresionaritmetica 
-                                | OP_ASIGNACION expresionaritmeticabool ;
+                                | OP_ASIGNACION expresionaritmetica;
 
 expresionaritmetica         : termino 
                               | expresionaritmetica OP_SUMA termino 
@@ -73,23 +72,17 @@ termino                     : factor
 factor                      : valor 
                               | OP_PARENTESIS_ABIERTO expresionaritmetica OP_PARENTESIS_CERRADO;
 
-expresionaritmeticabool     : terminobool 
-                              | expresionaritmeticabool OP_OR terminobool ;
-
-terminobool                 : factorbool 
-                              | terminobool operacionbool factorbool;
-
-factorbool                  : valor 
-                              | OP_PARENTESIS_ABIERTO expresionaritmeticabool OP_PARENTESIS_CERRADO;
-
 cambiarvalor                : IDENTIFICADOR asignarvalor
                               ;
+
+condicion                   : valor operacionbool valor | valor;
 
 condicional                 : condicionsi | condicionsi condicionno ;
 
 condicionno                 : ELSE bloquecodigo;
 
-condicionsi                 : IF OP_PARENTESIS_ABIERTO expresionaritmeticabool OP_PARENTESIS_CERRADO bloquecodigo;
+condicionsi                 : IF OP_PARENTESIS_ABIERTO condicion OP_PARENTESIS_CERRADO bloquecodigo 
+                              | error { yyerrok; };
 
 operacionbool               : OP_NEGACION | OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_DISTINTO;
 
