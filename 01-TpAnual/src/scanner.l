@@ -8,10 +8,6 @@
   int yylineno;
 	int errlex;
 	char msg[120];
-
-  /*void yyerror(char const *s) {
-    fprintf (stderr, "%s\n", s);
-  }*/
 %}
 
 %option outfile="scanner.c"
@@ -22,7 +18,7 @@
 SALTO               [\n]
 DIGITO              [0-9]
 CARACTER            [_a-zA-Z]
-OTRO                [[:punct:]]
+OTRO                [[:punct:]]{-}[();,+\-*/{}_]
 
 %%
 
@@ -49,11 +45,15 @@ OTRO                [[:punct:]]
 "return"                             return RETURN;
 "start"                              return MAIN;
 "int"                                {yylval = strdup(yytext); return INT;};
+"void"                               return VOID;
 "bool"                               return BOOL;
 "true"|"false"                       return ESTADO_BOOL;
-{CARACTER}({CARACTER}|{DIGITO})*     {if( yyleng > 16){errlex++; sprintf(msg, "Error léxico. \t Identificador excede longitud maxima: %s", yytext);  yyerror(msg);}else{yylval = strdup(yytext); return IDENTIFICADOR;}}
-{DIGITO}+                            {yylval = strdup(yytext); return CONSTANTE;};
-{OTRO}                               {errlex++; sprintf(msg, "Error léxico. \t Constante inválida: %s",  yytext);  yyerror(msg);}
+{CARACTER}({CARACTER}|{DIGITO})*{OTRO}+({CARACTER}|{DIGITO})* {errlex++; sprintf(msg, "Error léxico. \t Identificador inválido: %s",  yytext);  yyerror(msg);}
+{CARACTER}({CARACTER}|{DIGITO})*     {if( yyleng > 16){errlex++; sprintf(msg, "Error léxico. \t Identificador excede longitud maxima: %s", yytext);  yyerror(msg); return IDENTIFICADOR;}else{yylval = strdup(yytext); return IDENTIFICADOR;}}
+{DIGITO}+                            {yylval = strdup(yytext); return CONSTANTE;} //IMPORTANTE: Esta regla debe ir siempre antes de {DIGITO}({CARACTER}|{DIGITO})*
+{DIGITO}+{CARACTER}+{DIGITO}+({CARACTER}|{DIGITO})*        {errlex++; sprintf(msg, "Error léxico. \t Constante inválida: %s", yytext);  yyerror(msg);}
+{DIGITO}({CARACTER}|{DIGITO})*       {errlex++; sprintf(msg, "Error léxico. \t Identificador no puede comenzar con un dígito: %s", yytext);  yyerror(msg);}
+{OTRO}+                              {errlex++; sprintf(msg, "Error léxico. \t Cadena desconocida: %s",  yytext);  yyerror(msg);}
 
 %%
 

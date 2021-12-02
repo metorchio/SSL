@@ -1,13 +1,14 @@
 int start(){
   sarasa = 5
   int valor2 = 4;
+
 }
 
-int suma(int valor1, int ) {
+void suma(int valor1, int ) {
   v = 3;
 }
 
-int me(){
+void me(){
   int v = 4;
 }
 
@@ -17,19 +18,43 @@ unError asd() {
 
 int om(){
   bool = true;
+  return bool;
 }
 
-int suma( valor1, int v) {
-  var = 3;
+void suma( valor1, int v) {
+  var&%/$a = 4;
+  5var = 3;
+  una_variable = 5;
 }
 
 int math(){
   int v = 2 + (6- 4; 
+  int var = 2++;
+  return variableDemasiadoLarga;
 }
 
 int boolean(){
-  bool v = true || ;
-  bool b = 5 > < 6; 
+  int valor;
+  if( 4 >  ) {
+    valor = 4; }
+   else {
+    valor = 3;
+  }
+
+  if 4 > 5 ) {
+    valor = 4;
+    if(3 { asd = 4; }
+  } else {
+    valor = 3;
+  }
+
+  if( 4 > 5  {
+    valor = 4;
+  } else {
+    valor = 3;
+  }
+
+  return valor;
 }
 
 

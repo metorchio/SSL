@@ -1,4 +1,4 @@
-rm parser.h parser.c scanner.h scanner.c scanner_prueba parser.output
+rm parser.h parser.c scanner.h scanner.c compilador parser.output
 
 bison --verbose -d -o parser.c parser.y
 flex scanner.l

@@ -14,7 +14,7 @@
 %define api.value.type{char *}
 %define parse.error verbose
 
-%token OP_MENOR OP_MAYOR OP_ASIGNACION OP_SUMA OP_RESTA OP_MULTIPLICACION OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO OP_BLOQUE_ABIERTO OP_BLOQUE_CERRADO OP_FIN_DE_LINEA OP_SEPARADOR_PARAM IF ELSE RETURN INT BOOL ESTADO_BOOL IDENTIFICADOR CONSTANTE MAIN OP_IGUAL OP_AND OP_OR OP_DISTINTO OP_NEGACION
+%token OP_MENOR OP_MAYOR OP_ASIGNACION OP_SUMA OP_RESTA OP_MULTIPLICACION OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRADO OP_BLOQUE_ABIERTO OP_BLOQUE_CERRADO OP_FIN_DE_LINEA OP_SEPARADOR_PARAM IF ELSE RETURN INT BOOL ESTADO_BOOL IDENTIFICADOR CONSTANTE MAIN OP_IGUAL OP_AND OP_OR OP_DISTINTO OP_NEGACION VOID
 
 %left OP_SUMA OP_RESTA
 %left OP_MULTIPLICACION
@@ -32,9 +32,11 @@ principal                   : INT MAIN OP_PARENTESIS_ABIERTO OP_PARENTESIS_CERRA
 
 bloquecodigo                : OP_BLOQUE_ABIERTO lineascodigos OP_BLOQUE_CERRADO;
 
-lineascodigos               : lineascodigo | ;
+lineascodigos               : lineascodigo | lineascodigo retorno OP_FIN_DE_LINEA;
 
-lineascodigo                : lineascodigo linea | linea;
+retorno                     : RETURN valor;
+
+lineascodigo                : lineascodigo linea  | linea;
 
 linea                       : invocarmetodo OP_FIN_DE_LINEA  
                               | crearvariable OP_FIN_DE_LINEA  
@@ -75,18 +77,19 @@ factor                      : valor
 cambiarvalor                : IDENTIFICADOR asignarvalor
                               ;
 
-condicion                   : valor operacionbool valor | valor;
+condicion                   : valor operacionbool valor | valor | error { yyerrok; } ;
 
 condicional                 : condicionsi | condicionsi condicionno ;
 
-condicionno                 : ELSE bloquecodigo;
+condicionno                 : ELSE bloquecodigo | OP_BLOQUE_CERRADO ELSE bloquecodigo;
 
 condicionsi                 : IF OP_PARENTESIS_ABIERTO condicion OP_PARENTESIS_CERRADO bloquecodigo 
-                              ;
+                              | IF OP_PARENTESIS_ABIERTO condicion error bloquecodigo { yyerrok; };
 
 operacionbool               : OP_NEGACION | OP_MAYOR | OP_MENOR | OP_IGUAL | OP_AND | OP_DISTINTO;
 
-crearmetodo                 : tipodedato IDENTIFICADOR parametrosentrada bloquecodigo
+crearmetodo                 : VOID IDENTIFICADOR parametrosentrada bloquecodigo
+                              | tipodedato IDENTIFICADOR parametrosentrada bloquecodigo
                               | error bloquecodigo { yyerrok; } ;
 
 parametrosentrada           : OP_PARENTESIS_ABIERTO parametros OP_PARENTESIS_CERRADO 

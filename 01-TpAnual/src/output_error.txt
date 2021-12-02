@@ -1,0 +1,22 @@
+Compilación de: error_input.txt
+       
+Línea #3         syntax error, unexpected INT, expecting OP_FIN_DE_LINEA       
+Línea #7         syntax error, unexpected OP_PARENTESIS_CERRADO, expecting IDENTIFICADOR           
+Línea #15        syntax error, unexpected IDENTIFICADOR, expecting $end or INT or BOOL or VOID          
+Línea #20        syntax error, unexpected OP_ASIGNACION, expecting IDENTIFICADOR    
+Línea #21        syntax error, unexpected BOOL, expecting ESTADO_BOOL or IDENTIFICADOR or CONSTANTE  
+Línea #24        syntax error, unexpected IDENTIFICADOR, expecting OP_PARENTESIS_CERRADO or INT or BOOL     
+Línea #25        Error léxico.   Identificador inválido: var&%/
+Línea #25        Error léxico.   Cadena desconocida: $    
+Línea #26        Error léxico.   Identificador no puede comenzar con un dígito: 5var 
+Línea #26        syntax error, unexpected OP_ASIGNACION              
+Línea #31        syntax error, unexpected OP_FIN_DE_LINEA, expecting OP_SUMA or OP_RESTA or OP_PARENTESIS_CERRADO      
+Línea #32        syntax error, unexpected OP_SUMA, expecting OP_PARENTESIS_ABIERTO or ESTADO_BOOL or IDENTIFICADOR or CONSTANTE   
+Línea #33        Error léxico.   Identificador excede longitud maxima: variableDemasiadoLarga          
+Línea #38        syntax error, unexpected OP_PARENTESIS_CERRADO, expecting ESTADO_BOOL or IDENTIFICADOR or CONSTANTE                       
+Línea #44        syntax error, unexpected CONSTANTE, expecting OP_PARENTESIS_ABIERTO               
+Línea #46        syntax error, unexpected OP_BLOQUE_ABIERTO, expecting OP_PARENTESIS_CERRADO                       
+Línea #51        syntax error, unexpected OP_BLOQUE_ABIERTO, expecting OP_PARENTESIS_CERRADO                     
+
+Errores en la compilación.
+Errores léxicos: 4 - Errores sintáctico: 13

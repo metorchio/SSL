@@ -1,0 +1,5 @@
+
+Compilación de: input.txt
+                                                                                   
+
+Compilación terminada con éxito.
